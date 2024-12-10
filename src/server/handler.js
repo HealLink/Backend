@@ -1,5 +1,6 @@
 const { predictMentalHealth } = require("../services/inferenceService");
-const storeData = require("../services/storeData");
+const {storeData, fetchData} = require("../services/storeData");
+const {registerUser, loginUser} = require("../services/authService");
 const crypto = require("crypto");
 
 
@@ -10,10 +11,10 @@ async function postPredictHandler(request, h) {
     const predictions_final = await predictMentalHealth(sentence);
 
     const data = {
-        "id": id,
-         predictions_final,
-        "story": sentence,
-        "createdAt": createdAt
+        id: id,
+        result: predictions_final,
+        story: sentence,
+        createdAt: createdAt
     }
 
     await storeData(id, data);
@@ -27,4 +28,77 @@ async function postPredictHandler(request, h) {
     return response;
 };
 
-module.exports = postPredictHandler;
+async function predictionHistories(request, h) {
+    try {
+        const result = [];
+
+        const histories = await fetchData();
+
+        histories.forEach((snapshot) => {
+            const data = snapshot.data();
+            result.push({
+                id: snapshot.id,
+                history: {
+                    id: data.id,
+                    result: data.predictions_final,
+                    story: data.sentence,
+                    createdAt: data.createdAt
+                },
+            });
+        });
+        const response = h.response({
+            status: 'success',
+            data: result,
+        });
+        response.code(200)
+        return response;
+    } catch(e) {
+        const response = h.response({
+            status: 'error',
+            message: e,
+            data: result,
+        });
+        response.code(500)
+        return response;
+    }
+}
+
+async function registerHandler(request, h) {
+    const { name, email, password } = request.payload;
+
+    if (!name || !email || !password) {
+        throw new InputError('Name, email, and password are required');
+    }
+
+    const token = await registerUser(name, email, password);
+
+    const response = h.response({           
+        status: 'success',
+        message: 'User registered successfully',
+        data: { token },
+    });
+    response.type('application/json');
+    response.code(201);
+    return response;
+}
+
+// Handler untuk login
+async function loginHandler(request, h) {
+    const { email, password } = request.payload;
+
+    if (!email || !password) {
+        throw new InputError('Email and password are required');
+    }
+
+    const { token, name } = await loginUser(email, password);
+
+    const response = h.response({
+        status: 'success',
+        message: 'Login successful',
+        data: { token, name  },
+    });
+    response.code(200);
+    return response;
+}
+
+module.exports = {postPredictHandler, predictionHistories, registerHandler, loginHandler};

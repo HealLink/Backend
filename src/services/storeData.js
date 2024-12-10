@@ -14,4 +14,9 @@ async function storeData(id, data) {
     }
 };
 
-module.exports = storeData;
+async function fetchData() {
+    const predictCollection = db.collection('predictions');
+    return predictCollection.get();
+}
+
+module.exports = {storeData, fetchData};
