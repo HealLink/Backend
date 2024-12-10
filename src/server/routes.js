@@ -1,5 +1,5 @@
 // File ini bertanggung jawab menangani alur permintaan API
-const {postPredictHandler, predictionHistories} = require('../server/handler');
+const {postPredictHandler, predictionHistoriesHandler} = require('../server/handler');
 
 const routes = [
     {
@@ -16,7 +16,7 @@ const routes = [
     {
         path: '/histories',
         method: 'GET',
-        handler: predictionHistories,
+        handler: predictionHistoriesHandler,
     }
 ]
 

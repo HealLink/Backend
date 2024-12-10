@@ -27,7 +27,7 @@ async function postPredictHandler(request, h) {
     return response;
 };
 
-async function predictionHistories(request, h) {
+async function predictionHistoriesHandler(request, h) {
     try {
       const predictions_final = [];
   
@@ -66,4 +66,4 @@ async function predictionHistories(request, h) {
   
   
    
-  module.exports = { postPredictHandler, predictionHistories };
+  module.exports = { postPredictHandler, predictionHistoriesHandler };
