@@ -27,43 +27,4 @@ async function postPredictHandler(request, h) {
     return response;
 };
 
-async function predictionHistoriesHandler(request, h) {
-    try {
-      const predictions_final = [];
-  
-      const histories = await fetchData();
-  
-      histories.forEach((snapshot) => {
-        const data = snapshot.data();
-        predictions_final.push({
-          id: snapshot.id,
-          history: {
-            "id": data.id,
-            "result": data.predictions_final,
-            "story": data.sentence,
-            "createdAt": data.createdAt,
-          },
-        });
-      });
-  
-      const response = h.response({
-        status: 'success',
-        data: predictions_final,
-      });
-      response.code(200)
-      return response;
-    } catch (e) {
-      const response = h.response({
-        status: 'error',
-        message: e,
-        data: predictions_final,
-      });
-      response.code(500)
-      return response;
-    }
-    
-  }
-  
-  
-   
-  module.exports = { postPredictHandler, predictionHistoriesHandler };
+module.exports = postPredictHandler;
