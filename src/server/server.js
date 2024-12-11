@@ -1,7 +1,6 @@
 require('dotenv').config(); 
 
 const Hapi = require('@hapi/hapi');
-// const loadModel = require('../services/loadModel');
 const routes = require('../server/routes');
 const InputError = require('../exceptions/InputError');
 

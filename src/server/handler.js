@@ -95,7 +95,7 @@ async function loginHandler(request, h) {
     const response = h.response({
         status: 'success',
         message: 'Login successful',
-        data: { token, name  },
+        data: { token, name },
     });
     response.code(200);
     return response;
