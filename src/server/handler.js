@@ -36,9 +36,9 @@ async function predictionHistories(request, h) {
         //const token = request.headers.token;
         const histories = await fetchData();
 
-        if (!token) {
-            throw new InputError('Token is required');
-        }
+        // if (!token) {
+        //     throw new InputError('Token is required');
+        // }
 
         histories.forEach((snapshot) => {
             const data = snapshot.data();
