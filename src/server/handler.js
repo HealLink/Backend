@@ -5,7 +5,7 @@ const crypto = require("crypto");
 
 
 async function postPredictHandler(request, h) {
-    const { sentence,title, token } = request.payload;
+    const { sentence, title, token, date } = request.payload;
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
     const predictions_final = await predictMentalHealth(sentence);
@@ -14,6 +14,7 @@ async function postPredictHandler(request, h) {
         id: id,
         token: token,
         title: title,
+        date: date,
         result: predictions_final,
         story: sentence,
         createdAt: createdAt
@@ -48,6 +49,7 @@ async function predictionHistories(request, h) {
                     id: data.id,
                     token: data.token,
                     title: data.title,
+                    date: data.date,
                     result: data.result,
                     story: data.story,
                     createdAt: data.createdAt
