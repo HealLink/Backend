@@ -33,21 +33,29 @@ async function postPredictHandler(request, h) {
 async function predictionHistories(request, h) {
     try {
         const result = [];
+        const token = request.headers.token;
         const histories = await fetchData();
+
+        if (!token) {
+            throw new InputError('Token is required');
+        }
 
         histories.forEach((snapshot) => {
             const data = snapshot.data();
-            result.push({
-                id: snapshot.id,
-                history: {
-                    id: data.id,
-                    token: data.token,
-                    title: data.title,
-                    result: data.result,
-                    story: data.story,
-                    createdAt: data.createdAt
-                },
-            });
+
+            if (data.token === token) {
+                result.push({
+                    id: snapshot.id,
+                    history: {
+                        id: data.id,
+                        token: data.token,
+                        title: data.title,
+                        result: data.result,
+                        story: data.story,
+                        createdAt: data.createdAt
+                    },
+                });
+            }
         });
         const response = h.response({
             status: 'success',
