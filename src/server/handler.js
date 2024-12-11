@@ -9,16 +9,9 @@ async function postPredictHandler(request, h) {
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
     const predictions_final = await predictMentalHealth(sentence);
-    const { authorization } = request.headers;
-    const token = authorization.replace("Bearer ", "")
-
-    if (!authorization) {
-        throw new InputError("Authorization token is required");
-    }
 
     const data = {
         id: id,
-        token: token,
         result: predictions_final,
         story: sentence,
         createdAt: createdAt
@@ -38,28 +31,20 @@ async function postPredictHandler(request, h) {
 async function predictionHistories(request, h) {
     try {
         const result = [];
-        const histories = await fetchData();
-        const { authorization } = request.headers;
-        const token = authorization.replace("Bearer ", "");
 
-        if (!authorization) {
-            throw new InputError("Authorization token is required");
-        }
+        const histories = await fetchData();
 
         histories.forEach((snapshot) => {
             const data = snapshot.data();
-
-            if (data.token === token) {
-                result.push({
-                    id: snapshot.id,
-                    history: {
-                        id: data.id,
-                        result: data.result,
-                        story: data.story,
-                        createdAt: data.createdAt
-                    },
-                });
-            }
+            result.push({
+                id: snapshot.id,
+                history: {
+                    id: data.id,
+                    result: data.result,
+                    story: data.story,
+                    createdAt: data.createdAt
+                },
+            });
         });
         const response = h.response({
             status: 'success',
