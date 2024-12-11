@@ -40,8 +40,8 @@ async function predictionHistories(request, h) {
                 id: snapshot.id,
                 history: {
                     id: data.id,
-                    result: data.predictions_final,
-                    story: data.sentence,
+                    result: data.result,
+                    story: data.story,
                     createdAt: data.createdAt
                 },
             });
