@@ -33,7 +33,7 @@ async function postPredictHandler(request, h) {
 async function predictionHistories(request, h) {
     try {
         const result = [];
-        const token = request.headers.token;
+        //const token = request.headers.token;
         const histories = await fetchData();
 
         if (!token) {
@@ -42,20 +42,17 @@ async function predictionHistories(request, h) {
 
         histories.forEach((snapshot) => {
             const data = snapshot.data();
-
-            if (data.token === token) {
-                result.push({
-                    id: snapshot.id,
-                    history: {
-                        id: data.id,
-                        token: data.token,
-                        title: data.title,
-                        result: data.result,
-                        story: data.story,
-                        createdAt: data.createdAt
-                    },
-                });
-            }
+            result.push({
+                id: snapshot.id,
+                history: {
+                    id: data.id,
+                    token: data.token,
+                    title: data.title,
+                    result: data.result,
+                    story: data.story,
+                    createdAt: data.createdAt
+                },
+            });
         });
         const response = h.response({
             status: 'success',
