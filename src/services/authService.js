@@ -10,7 +10,7 @@ const db = new Firestore({
 });
 
 async function registerUser(name, email, password) {
-    const userCollection = db.collection('users');
+    const userCollection = db.collection('predictions');
 
     // Cek apakah email sudah terdaftar
     const userDoc = await userCollection.where('email', '==', email).get();
@@ -31,7 +31,7 @@ async function registerUser(name, email, password) {
 }
 
 async function loginUser(email, password) {
-    const userCollection = db.collection('users');
+    const userCollection = db.collection('predictions');
 
     // Cari user berdasarkan email
     const userSnapshot = await userCollection.where('email', '==', email).get();
