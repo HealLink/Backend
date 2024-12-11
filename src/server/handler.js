@@ -5,8 +5,7 @@ const crypto = require("crypto");
 
 
 async function postPredictHandler(request, h) {
-    const { sentence } = request.payload;
-    const { title } = requrest.payload;
+    const { sentence,title } = request.payload;
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
     const predictions_final = await predictMentalHealth(sentence);

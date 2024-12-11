@@ -3,15 +3,15 @@ const InputError = require("../exceptions/InputError");
 
 const TF_SERVING_URL = "https://ml-model-serving-26979933732.asia-southeast2.run.app/v1/models/model_bert-en-uncased-l-12-h-768-a-12:predict";
 
-async function predictMentalHealth(sentence, title) {
+async function predictMentalHealth(sentence) {
     try {
-        if (!sentence,title || typeof sentence,title !== "string") {
+        if (!sentence || typeof sentence !== "string") {
             throw new InputError("Input sentence is required and must be a string");
         }
 
         // Format data untuk TensorFlow Serving
         const inputData = {
-            instances: [[sentence], [title]],
+            instances: [[sentence]],
         };
 
         // Kirim permintaan ke TensorFlow Serving
